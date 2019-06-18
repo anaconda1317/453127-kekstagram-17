@@ -21,9 +21,11 @@ var NAMES = [
   'Дима'];
 
 
+  // Math.random() это API - это стандартная функция
+
 // функция для получения случайного числа в заданном диапазоне
 var getRandomNumber = function (min, max) {
-  return Math.round(min - 0.5 * Math.random() - (max - min + 1)) * -1;
+  return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
 // Получение случайного элемента из массива
