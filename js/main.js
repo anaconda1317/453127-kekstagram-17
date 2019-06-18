@@ -99,3 +99,127 @@ for (var i = 0; i < photos.length; i++) {
 }
 
 picturesBlock.appendChild(fragment);
+
+
+// edit image pop-up
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+// var imgUploadForm = document.querySelector('.img-upload__form');
+var uploadElement = document.querySelector('.img-upload');
+// Изначальное состояние поля для загрузки изображения
+var inputIdUploadFile = imgUploadForm.querySelector('#upload-file');
+// Форма редактирования изображения, которую надо показать
+var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+// КНОПКА ЗАКРЫТИЯ
+var buttonImgUploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
+// Предварительный просмотр изображения
+var uploadImagePreview = imgUploadOverlay.querySelector('.img-upload__preview');
+// Превью фото без эффекта- оригинал
+var originalImg = imgUploadForm.querySelector('#effect-none');
+// Наложение эффекта на изображение
+var imgUploadEffects = imgUploadOverlay.querySelector('.img-upload__effects');
+// Изменение глубины эффекта, накладываемого на изображение
+var effectLevelValue = document.querySelector('.effect-level__value');
+
+var uploadImage = uploadImagePreview.querySelector('img');
+var originalImg = document.querySelector('#effect-none');
+
+
+
+var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
+// Кнопка изменения глубины эффекта фотографии
+var effectLevelPin = document.querySelector('.effect-level__pin');
+// Глубина эффекта фотографии
+var effectLevelDepth = document.querySelector('.effect-level__depth');
+// ????
+var effectLevelLine = document.querySelector('.effect-level__line');
+
+var effectsListElement = uploadElement.querySelector('.effects__list');
+var currentEffectName = effectsListElement.querySelector('.effects__radio:checked');
+
+var DEFAULT_EFFECT = 'none';
+var EffectParameters = {
+  chrome: {
+    CLASS: 'effects__preview--chrome',
+    PROPERTY: 'grayscale',
+    MIN_VALUE: 0,
+    MAX_VALUE: 1,
+    UNIT: ''
+  },
+  sepia: {
+    CLASS: 'effects__preview--sepia',
+    PROPERTY: 'sepia',
+    MIN_VALUE: 0,
+    MAX_VALUE: 1,
+    UNIT: ''
+  },
+};
+var EffectValue = {
+  DEFAULT: 100,
+  MAX: 100
+};
+
+var PinValue = {
+  MIN: 0,
+  MAX: 100
+};
+
+
+// ПОКАЗЫВАЕТ-ОТКРЫВАЕТ форму редактирования изображения без функции в теле
+// закрывает форму редактирования изображения при нажатии esc по всему документу
+
+inputIdUploadFile.addEventListener('change', function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupUploadEscPress);
+});
+
+// закрытие при нажатии Esc
+var onPopupUploadEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var closePopup = function () {
+  imgUploadOverlay.classList.add('hidden');
+  // убираем обработчик события со всего документа
+  document.removeEventListener('keydown', onPopupUploadEscPress);
+};
+
+// закрывает форму редактирования изображения
+buttonImgUploadCancel.addEventListener('click', function () {
+  closePopup();
+});
+
+
+// var onMouseUpPin = function () {
+// };
+
+// document.addEventListener('mouseup', onMouseUpPin);
+
+// Мы ловим событие click  при нажатии на radio-button,
+// на большой картинке с котом добавляеся свойство фильтр с интенсивностью 100%
+
+currentEffectName.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'invert(100%)';
+});
+
+
+var applyEffect = function ()  {
+  if (currentEffectName === DEFAULT_EFFECT) {
+    uploadImagePreview.style.filter = '';
+  }
+};
+// Нет, тут наверное делегирование должно быть на все радио-баттоны
+var radioChecked = function (evt) {};
+
+if (evt.target.checked) {
+  classList.add('effects__preview--' + evt.target.value);
+  uploadImage.style = 'none';
+    if (evt.target.value === 'effects__preview--none') {
+      effectLevelScale.classList.add('hidden');
+      // шкала убирается
+}
+
+uploadImagePreview.style.filter = '';
