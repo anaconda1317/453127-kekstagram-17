@@ -105,7 +105,7 @@ picturesBlock.appendChild(fragment);
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-// var imgUploadForm = document.querySelector('.img-upload__form');
+var imgUploadForm = document.querySelector('.img-upload__form');
 var uploadElement = document.querySelector('.img-upload');
 // Изначальное состояние поля для загрузки изображения
 var inputIdUploadFile = imgUploadForm.querySelector('#upload-file');
@@ -130,40 +130,18 @@ var originalImg = document.querySelector('#effect-none');
 var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
 // Кнопка изменения глубины эффекта фотографии
 var effectLevelPin = document.querySelector('.effect-level__pin');
-// Глубина эффекта фотографии
+// Глубина эффекта фотографии yellow - ее длинна шкалы регулируется положением Pin
 var effectLevelDepth = document.querySelector('.effect-level__depth');
-// ????
+// Глубина эффекта фотографии - вся шкала - yellow +opacity
 var effectLevelLine = document.querySelector('.effect-level__line');
 
 var effectsListElement = uploadElement.querySelector('.effects__list');
-var currentEffectName = effectsListElement.querySelector('.effects__radio:checked');
-
-var DEFAULT_EFFECT = 'none';
-var EffectParameters = {
-  chrome: {
-    CLASS: 'effects__preview--chrome',
-    PROPERTY: 'grayscale',
-    MIN_VALUE: 0,
-    MAX_VALUE: 1,
-    UNIT: ''
-  },
-  sepia: {
-    CLASS: 'effects__preview--sepia',
-    PROPERTY: 'sepia',
-    MIN_VALUE: 0,
-    MAX_VALUE: 1,
-    UNIT: ''
-  },
-};
-var EffectValue = {
-  DEFAULT: 100,
-  MAX: 100
-};
-
-var PinValue = {
-  MIN: 0,
-  MAX: 100
-};
+var currentEffectNone = effectsListElement.querySelector('#effect-none');
+var currentEffectChrome = effectsListElement.querySelector('#effect-chrome');
+var currentEffectSepia = effectsListElement.querySelector('#effect-sepia');
+var currentEffectMarvin = effectsListElement.querySelector('#effect-marvin');
+var currentEffectPhobos = effectsListElement.querySelector('#effect-phobos');
+var currentEffectHeat = effectsListElement.querySelector('#effect-heat');
 
 
 // ПОКАЗЫВАЕТ-ОТКРЫВАЕТ форму редактирования изображения без функции в теле
@@ -192,34 +170,51 @@ buttonImgUploadCancel.addEventListener('click', function () {
   closePopup();
 });
 
+// Мы ловим событие click  при нажатии на radio-button, которую находим по ее id,
+// на большой картинке с котом добавляеся  фильтр с интенсивностью 100%
+
+currentEffectNone.addEventListener('click', function () {
+  uploadImagePreview.style.filter = '';
+});
+
+currentEffectChrome.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'grayscale(1)';
+});
+
+currentEffectSepia.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'sepia(1)';
+});
+
+currentEffectMarvin.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'invert(100%)';
+});
+
+currentEffectPhobos.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'blur(5px)';
+});
+
+currentEffectHeat.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'brightness(3)';
+});
+
+
+// Нет, тут наверное делегирование должно быть на все радио-баттоны
+// var radioChecked = function (evt) {
+//   if (evt.target.checked) {
+//     classList.add('effects__preview--' + evt.target.value);
+//     uploadImage.style = '';
+//       if (evt.target.value === 'effects__preview--none') {
+//         effectLevelScale.classList.add('hidden');
+//         // шкала убирается
+//       }
+// };
+
+
+
+// uploadImagePreview.style.filter = '';
+
 
 // var onMouseUpPin = function () {
 // };
 
 // document.addEventListener('mouseup', onMouseUpPin);
-
-// Мы ловим событие click  при нажатии на radio-button,
-// на большой картинке с котом добавляеся свойство фильтр с интенсивностью 100%
-
-currentEffectName.addEventListener('click', function () {
-  uploadImagePreview.style.filter = 'invert(100%)';
-});
-
-
-var applyEffect = function ()  {
-  if (currentEffectName === DEFAULT_EFFECT) {
-    uploadImagePreview.style.filter = '';
-  }
-};
-// Нет, тут наверное делегирование должно быть на все радио-баттоны
-var radioChecked = function (evt) {};
-
-if (evt.target.checked) {
-  classList.add('effects__preview--' + evt.target.value);
-  uploadImage.style = 'none';
-    if (evt.target.value === 'effects__preview--none') {
-      effectLevelScale.classList.add('hidden');
-      // шкала убирается
-}
-
-uploadImagePreview.style.filter = '';
