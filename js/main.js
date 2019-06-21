@@ -21,7 +21,7 @@ var NAMES = [
   'Дима'];
 
 
-  // Math.random() это API - это стандартная функция
+// Math.random() это API - это стандартная функция
 
 // функция для получения случайного числа в заданном диапазоне
 var getRandomNumber = function (min, max) {
@@ -99,3 +99,85 @@ for (var i = 0; i < photos.length; i++) {
 }
 
 picturesBlock.appendChild(fragment);
+
+
+// edit image pop-up
+var ESC_KEYCODE = 27;
+
+var imgUploadForm = document.querySelector('.img-upload__form');
+var uploadElement = document.querySelector('.img-upload');
+// Изначальное состояние поля для загрузки изображения
+var inputIdUploadFile = imgUploadForm.querySelector('#upload-file');
+// Форма редактирования изображения, которую надо показать
+var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+// КНОПКА ЗАКРЫТИЯ
+var buttonImgUploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
+// Предварительный просмотр изображения
+var uploadImagePreview = imgUploadOverlay.querySelector('.img-upload__preview');
+// Превью фото без эффекта- оригинал
+
+var effectsListElement = uploadElement.querySelector('.effects__list');
+var inputEffectNone = effectsListElement.querySelector('#effect-none');
+var inputEffectChrome = effectsListElement.querySelector('#effect-chrome');
+var inputEffectSepia = effectsListElement.querySelector('#effect-sepia');
+var inputEffectMarvin = effectsListElement.querySelector('#effect-marvin');
+var inputEffectPhobos = effectsListElement.querySelector('#effect-phobos');
+var inputEffectHeat = effectsListElement.querySelector('#effect-heat');
+
+var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
+
+// ПОКАЗЫВАЕТ-ОТКРЫВАЕТ форму редактирования изображения без функции в теле
+// закрывает форму редактирования изображения при нажатии esc по всему документу
+
+inputIdUploadFile.addEventListener('change', function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupUploadEscPress);
+});
+
+// закрытие при нажатии Esc
+var onPopupUploadEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+
+var closePopup = function () {
+  imgUploadOverlay.classList.add('hidden');
+  // убираем обработчик события со всего документа
+  document.removeEventListener('keydown', onPopupUploadEscPress);
+};
+
+// закрывает форму редактирования изображения
+buttonImgUploadCancel.addEventListener('click', function () {
+  closePopup();
+});
+
+// Мы ловим событие click  при нажатии на radio-button, которую находим по ее id,
+// на большой картинке с котом добавляеся  фильтр с интенсивностью 100%
+
+inputEffectNone.addEventListener('click', function () {
+  uploadImagePreview.style.filter = '';
+  effectLevelScale.classList.add('hidden');
+});
+
+inputEffectChrome.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'grayscale(1)';
+  effectLevelScale.classList.remove('hidden');
+});
+
+inputEffectSepia.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'sepia(1)';
+});
+
+inputEffectMarvin.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'invert(100%)';
+});
+
+inputEffectPhobos.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'blur(5px)';
+});
+
+inputEffectHeat.addEventListener('click', function () {
+  uploadImagePreview.style.filter = 'brightness(3)';
+});
