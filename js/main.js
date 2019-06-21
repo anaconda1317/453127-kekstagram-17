@@ -21,7 +21,7 @@ var NAMES = [
   'Дима'];
 
 
-  // Math.random() это API - это стандартная функция
+// Math.random() это API - это стандартная функция
 
 // функция для получения случайного числа в заданном диапазоне
 var getRandomNumber = function (min, max) {
@@ -103,7 +103,6 @@ picturesBlock.appendChild(fragment);
 
 // edit image pop-up
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
 var imgUploadForm = document.querySelector('.img-upload__form');
 var uploadElement = document.querySelector('.img-upload');
@@ -116,33 +115,16 @@ var buttonImgUploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
 // Предварительный просмотр изображения
 var uploadImagePreview = imgUploadOverlay.querySelector('.img-upload__preview');
 // Превью фото без эффекта- оригинал
-var originalImg = imgUploadForm.querySelector('#effect-none');
-// Наложение эффекта на изображение
-var imgUploadEffects = imgUploadOverlay.querySelector('.img-upload__effects');
-// Изменение глубины эффекта, накладываемого на изображение
-var effectLevelValue = document.querySelector('.effect-level__value');
-
-var uploadImage = uploadImagePreview.querySelector('img');
-var originalImg = document.querySelector('#effect-none');
-
-
-
-var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
-// Кнопка изменения глубины эффекта фотографии
-var effectLevelPin = document.querySelector('.effect-level__pin');
-// Глубина эффекта фотографии yellow - ее длинна шкалы регулируется положением Pin
-var effectLevelDepth = document.querySelector('.effect-level__depth');
-// Глубина эффекта фотографии - вся шкала - yellow +opacity
-var effectLevelLine = document.querySelector('.effect-level__line');
 
 var effectsListElement = uploadElement.querySelector('.effects__list');
-var currentEffectNone = effectsListElement.querySelector('#effect-none');
-var currentEffectChrome = effectsListElement.querySelector('#effect-chrome');
-var currentEffectSepia = effectsListElement.querySelector('#effect-sepia');
-var currentEffectMarvin = effectsListElement.querySelector('#effect-marvin');
-var currentEffectPhobos = effectsListElement.querySelector('#effect-phobos');
-var currentEffectHeat = effectsListElement.querySelector('#effect-heat');
+var inputEffectNone = effectsListElement.querySelector('#effect-none');
+var inputEffectChrome = effectsListElement.querySelector('#effect-chrome');
+var inputEffectSepia = effectsListElement.querySelector('#effect-sepia');
+var inputEffectMarvin = effectsListElement.querySelector('#effect-marvin');
+var inputEffectPhobos = effectsListElement.querySelector('#effect-phobos');
+var inputEffectHeat = effectsListElement.querySelector('#effect-heat');
 
+var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
 
 // ПОКАЗЫВАЕТ-ОТКРЫВАЕТ форму редактирования изображения без функции в теле
 // закрывает форму редактирования изображения при нажатии esc по всему документу
@@ -159,6 +141,7 @@ var onPopupUploadEscPress = function (evt) {
   }
 };
 
+
 var closePopup = function () {
   imgUploadOverlay.classList.add('hidden');
   // убираем обработчик события со всего документа
@@ -173,48 +156,28 @@ buttonImgUploadCancel.addEventListener('click', function () {
 // Мы ловим событие click  при нажатии на radio-button, которую находим по ее id,
 // на большой картинке с котом добавляеся  фильтр с интенсивностью 100%
 
-currentEffectNone.addEventListener('click', function () {
+inputEffectNone.addEventListener('click', function () {
   uploadImagePreview.style.filter = '';
+  effectLevelScale.classList.add('hidden');
 });
 
-currentEffectChrome.addEventListener('click', function () {
+inputEffectChrome.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'grayscale(1)';
+  effectLevelScale.classList.remove('hidden');
 });
 
-currentEffectSepia.addEventListener('click', function () {
+inputEffectSepia.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'sepia(1)';
 });
 
-currentEffectMarvin.addEventListener('click', function () {
+inputEffectMarvin.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'invert(100%)';
 });
 
-currentEffectPhobos.addEventListener('click', function () {
+inputEffectPhobos.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'blur(5px)';
 });
 
-currentEffectHeat.addEventListener('click', function () {
+inputEffectHeat.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'brightness(3)';
 });
-
-
-// Нет, тут наверное делегирование должно быть на все радио-баттоны
-// var radioChecked = function (evt) {
-//   if (evt.target.checked) {
-//     classList.add('effects__preview--' + evt.target.value);
-//     uploadImage.style = '';
-//       if (evt.target.value === 'effects__preview--none') {
-//         effectLevelScale.classList.add('hidden');
-//         // шкала убирается
-//       }
-// };
-
-
-
-// uploadImagePreview.style.filter = '';
-
-
-// var onMouseUpPin = function () {
-// };
-
-// document.addEventListener('mouseup', onMouseUpPin);
