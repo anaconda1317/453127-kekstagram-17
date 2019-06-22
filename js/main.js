@@ -12,7 +12,7 @@ var Like = {
   MAX: 200
 };
 
-var AVATARS_COUNT = 6;
+var MAX_URL_AVATAR = 6;
 
 var NAMES = [
   'Вася', 'Петя',
@@ -40,7 +40,7 @@ var getRandomComment = function () {
   var message = getRandomElement(MESSAGES);
   var message1 = getRandomElement(MESSAGES);
   var comment = {
-    avatar: 'img/avatar-' + getRandomNumber(1, AVATARS_COUNT) + '.svg',
+    avatar: 'img/avatar-' + getRandomNumber(1, MAX_URL_AVATAR) + '.svg',
     message: message + message1,
     name: getRandomElement(NAMES)
   };
@@ -126,6 +126,9 @@ var inputEffectHeat = effectsListElement.querySelector('#effect-heat');
 
 var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
 
+// Валидация комментариев, #тег
+var focusTextarea = imgUploadForm.querySelector('.text__description');
+
 // ПОКАЗЫВАЕТ-ОТКРЫВАЕТ форму редактирования изображения без функции в теле
 // закрывает форму редактирования изображения при нажатии esc по всему документу
 
@@ -134,10 +137,12 @@ inputIdUploadFile.addEventListener('change', function () {
   document.addEventListener('keydown', onPopupUploadEscPress);
 });
 
+
 // закрытие при нажатии Esc
 var onPopupUploadEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closePopup();
+    imgUploadForm.reset();
   }
 };
 
@@ -148,7 +153,7 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupUploadEscPress);
 };
 
-// закрывает форму редактирования изображения
+// закрывает форму редактирования изображения кнопкой
 buttonImgUploadCancel.addEventListener('click', function () {
   closePopup();
 });
@@ -180,4 +185,17 @@ inputEffectPhobos.addEventListener('click', function () {
 
 inputEffectHeat.addEventListener('click', function () {
   uploadImagePreview.style.filter = 'brightness(3)';
+});
+
+// Валидация комментариев,если фокус находится в поле ввода комментария,
+//  нажатие на Esc не должно приводить к закрытию формы редактирования изображения
+// событие focus происходит, когда таб переходим или мышкой в фокусе те кода элемент становится активным
+// когда нажимаем esc происх соб keydoun
+
+
+focusTextarea .addEventListener('keydown', function (evt) {
+  // focusTextarea === evt.target;
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.stopPropagation();
+  }
 });
