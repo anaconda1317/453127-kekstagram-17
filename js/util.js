@@ -26,8 +26,8 @@
         var randomIndex = window.util.getRandomNumber(0, buffer.length - 1);
 
         if (randomIndex >= 0) {
-        // В массив  uniqueElement добавляем элемент с индексом randomIndex из массива buffer.
-        //  Результат этого выраж buffer[randomIndex] - элемент из массива buffer randomIndex
+          // В массив  uniqueElement добавляем элемент с индексом randomIndex из массива buffer.
+          //  Результат этого выраж buffer[randomIndex] - элемент из массива buffer randomIndex
           uniqueElement.push(buffer[randomIndex]);
           buffer.splice(randomIndex, 1);
         }
