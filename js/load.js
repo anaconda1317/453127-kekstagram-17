@@ -4,6 +4,7 @@
     GET: 'https://js.dump.academy/kekstagram/data'
   };
   var TIMEOUT = 10000;
+  //  10 милисекунд
 
   window.load = function (onSuccess, onError) {
 
