@@ -21,6 +21,7 @@
   var currentEffectName = effectsListElement.querySelector('.effects__radio:checked');
   var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
 
+
   // Показываем форму редактирования изображения событие 'change' на input type="file" id="upload-file"
   inputIdUploadFile.addEventListener('change', function () {
     imgUploadOverlay.classList.remove('hidden');

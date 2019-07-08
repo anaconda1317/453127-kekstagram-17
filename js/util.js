@@ -9,12 +9,32 @@
     getRandomNumber: function (min, max) {
       return Math.floor(min + Math.random() * (max + 1 - min));
     },
+
+    // Получение случайного элемента из массива
     getRandomElement: function (arr) {
-      // Получение случайного элемента из массива
-      var randomIndex = window.util.getRandomNumber(0, arr.length);
+      var randomIndex = window.util.getRandomNumber(0, arr.length - 1);
       var randomElement = arr[randomIndex];
       return randomElement;
     },
+
+    // Получение УНИКАЛЬНОГО  элемента из массива
+    getUniqueElement: function (arr, quantity) {
+      var uniqueElement = [];
+      var buffer = arr.slice();
+
+      for (var i = 0; i < quantity; i++) {
+        var randomIndex = window.util.getRandomNumber(0, buffer.length - 1);
+
+        if (randomIndex >= 0) {
+          // В массив  uniqueElement добавляем элемент с индексом randomIndex из массива buffer.
+          //  Результат этого выраж buffer[randomIndex] - элемент из массива buffer randomIndex
+          uniqueElement.push(buffer[randomIndex]);
+          buffer.splice(randomIndex, 1);
+        }
+      }
+      return uniqueElement;
+    },
+
     // нажатие ENTER
     isEnterEvent: function (evt, action) {
       if (evt.keyCode === ENTER_KEYCODE) {
