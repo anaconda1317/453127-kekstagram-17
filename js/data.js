@@ -6,6 +6,7 @@
   var MAX_URL = 25;
 
   var MAX_URL_AVATAR = 6;
+  var MIN_URL_AVATAR = 1;
   var LIKE = {
     MIN: 15,
     MAX: 200
@@ -29,6 +30,7 @@
     MIN_URL: MIN_URL,
     MAX_URL: MAX_URL,
     MAX_URL_AVATAR: MAX_URL_AVATAR,
+    MIN_URL_AVATAR: MIN_URL_AVATAR,
     LIKE: LIKE,
     NAMES: NAMES,
     MESSAGES: MESSAGES

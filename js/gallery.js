@@ -26,7 +26,7 @@
     return photoElement;
   };
 
-  // функция удаление фото отрисованых начало
+  // функция удаление фото отрисованых-начало
   var callback = function (node) {
     // Метод Node.remove() удаляет узел из дерева DOM
     node.remove();
@@ -36,7 +36,7 @@
     // это псевдомассив
     formerPhoto.forEach(callback);
   };
-  // функция удаление фото отрисованых конец
+  // функция удаление фото отрисованых-конец
 
 
   // отрисовка фото в документе
@@ -106,6 +106,7 @@
   // упаковываем полученные с сервера по GET запросу массив объектов в фрагмент(импортируем функцию window.load)
   // 1. загрузили фотогафии на страницу
   window.load(function (photos) {
+    window.photoPopup.openPopup(photos[0]);
     renderPhotos(photos);
     // 2. после этого показать блок с кнопками-фильтрами
     sortFilters.classList.remove('img-filters--inactive');
