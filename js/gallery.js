@@ -17,8 +17,9 @@
 
   var renderPhoto = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
+    photoElement.dataset.index = photo.index;
 
-    // ???элемента
+    // заполняем склонированный элемент
     photoElement.querySelector('.picture__img').src = photo.url;
     photoElement.querySelector('.picture__likes').textContent = photo.likes;
     photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
@@ -40,7 +41,7 @@
 
 
   // отрисовка фото в документе
-  var renderPhotos = function (photos) {
+  var renderPhotos = window.debounce(function (photos) {
     var fragment = document.createDocumentFragment();
     // Мы сложили в массив фотки, а цикл организован по массиву -
     //  и мы опираеcя на порядок элементов в массиве (он начся с 0)
@@ -50,27 +51,27 @@
     });
     picturesBlock.appendChild(fragment);
 
-  };
+  });
 
   // сортировка ПОПУЛЯРНЫЕ
   // Мы вызываем функцию window.debounce и ей передаем в параметры  анонимную функцию,
   // которая удаляет, отрисовывает фото, после того как мы передали анонимную функцию.
   // Результат мы сохраняем в showPopularPhotos
-  var showPopularPhotos = window.debounce(function (photos) {
+  var showPopularPhotos = function (photos) {
     removeFormerPhotos();
     renderPhotos(photos);
-  });
+  };
 
   // сортировка НОВЫЕ -копируем исходный массив
-  var showNewPhotos = window.debounce(function (photos) {
+  var showNewPhotos = function (photos) {
     removeFormerPhotos();
     var randomPhotos = window.util.getUniqueElement(photos, NEW_PHOTOS_COUNT);
 
     renderPhotos(randomPhotos);
-  });
+  };
 
   // сортировка ОБСУЖДАЕМЫЕ - копируем исходный массив
-  var showDiscussedPhotos = window.debounce(function (photos) {
+  var showDiscussedPhotos = function (photos) {
     removeFormerPhotos();
     var photosCopy = photos.slice();
     // compare функция коллбэк
@@ -87,8 +88,7 @@
     //  аргумент (compare) - функция sort использ рез-тат работы функц compare
     photosCopy.sort(compare);
     renderPhotos(photosCopy);
-
-  });
+  };
 
 
   // сортировка  - переопределяем button--active
@@ -97,8 +97,6 @@
       activeSortBtn.classList.remove('img-filters__button--active');
       evt.target.classList.add('img-filters__button--active');
       activeSortBtn = evt.target;
-
-
     }
   };
 
@@ -106,7 +104,13 @@
   // упаковываем полученные с сервера по GET запросу массив объектов в фрагмент(импортируем функцию window.load)
   // 1. загрузили фотогафии на страницу
   window.load(function (photos) {
-    window.photoPopup.openPopup(photos[0]);
+    // в параметры .forEach передаем photo - очередной элемент массива, i – номер элемент массива
+    // В .forEach передаем очередной элемент массива и индекс этого элемента.
+    photos.forEach(function (photo, i) {
+      // i это index. Сохраняем его как свойство index у объекта photo, который пришел с сервера. Мы в каждой фотографии сохраняем ее индекс
+      photo.index = i;
+      // Мы сохраняем индекс самого элемента в свойстве index у объекта photo
+    });
     renderPhotos(photos);
     // 2. после этого показать блок с кнопками-фильтрами
     sortFilters.classList.remove('img-filters--inactive');
@@ -127,5 +131,22 @@
       showDiscussedPhotos(photos);
     });
 
+    // открытие попапа с полноразмерным фото
+    var onPhotoClick = function (evt) {
+      var target = evt.target;
+      // Цикл while работает пока возвр tru, если folse, то цикл переходит на if
+      while (!target.classList.contains('picture') && target.parentNode) {
+        target = target.parentNode;
+        // смотрим подходит ли - пока то, на чем совершили клик не содерж класс 'picture' и у него есть родитель,
+        // вместо 'picture' в target запишем родительский элемент
+      }
+      if (target.classList.contains('picture')) {
+        evt.preventDefault();
+        window.photoPopup.openPopup(photos[target.dataset.index]);
+        // функция openPopup показывает фото, у которого индекс той фото, на которой был клик
+      }
+    };
+    picturesBlock.addEventListener('click', onPhotoClick);
+    // picturesBlock это parentNode
   });
 })();
