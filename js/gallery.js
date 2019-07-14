@@ -134,13 +134,18 @@
     // открытие попапа с полноразмерным фото
     var onPhotoClick = function (evt) {
       var target = evt.target;
-      // Цикл while работает пока возвр tru, если folse, то цикл переходит на if
-      while (!target.classList.contains('picture') && target.parentNode) {
+      // Цикл while работает пока возвр tru (нажали на span - <p> родитель - это не 'picture' - вернул true-
+      // цикл дальше, дальше нажали <p> родитель - 'picture' -это <a> вернул folse ), если folse, то цикл переходит на if
+      // смотрим подходит ли - пока то, на чем совершили клик не содерж класс 'picture' и у него есть родитель,
+      // вместо 'picture' в target запишем родительский элемент
+      while (target && (target === document || !target.classList.contains('picture'))) {
         target = target.parentNode;
-        // смотрим подходит ли - пока то, на чем совершили клик не содерж класс 'picture' и у него есть родитель,
-        // вместо 'picture' в target запишем родительский элемент
+        // target === document, у document нет parentNode, поэтому вернет null и поэтому openPopup не сработает для кошака
+        // он загрузится по старому обработчику на событие 'change'
+
       }
-      if (target.classList.contains('picture')) {
+
+      if (target) {
         evt.preventDefault();
         window.photoPopup.openPopup(photos[target.dataset.index]);
         // функция openPopup показывает фото, у которого индекс той фото, на которой был клик
