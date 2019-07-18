@@ -1,12 +1,13 @@
 'use strict';
 (function () {
   var Url = {
-    GET: 'https://js.dump.academy/kekstagram/data'
+    GET: 'https://js.dump.academy/kekstagram/data',
+    POST:'https://js.dump.academy/kekstagram'
   };
   var TIMEOUT = 10000;
   //  10 милисекунд
 
-  window.load = function (onSuccess, onError) {
+  var load = function (onSuccess, onError) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -29,9 +30,23 @@
 
     xhr.open('GET', Url.GET);
     xhr.send();
+  };
+
+  var upload = function (data, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      onSuccess(xhr.response);
+    });
+
+    xhr.open('POST', Url.POST);
+    xhr.send(data);
+  };
 
 
+  window.backend = {
+    load: load,
+    upload: upload
   };
 })();
-
-

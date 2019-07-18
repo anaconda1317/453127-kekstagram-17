@@ -20,6 +20,7 @@
   var inputEffectHeat = effectsListElement.querySelector('#effect-heat');
   var currentEffectName = effectsListElement.querySelector('.effects__radio:checked');
   var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
+  var submitBtn = imgUploadForm.querySelector('.img-upload__submit');
 
 
   // Показываем форму редактирования изображения событие 'change' на input type="file" id="upload-file"
@@ -188,4 +189,19 @@
     }
   };
 
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    submitBtn.disabled = true;
+
+    window.backend.upload(new FormData(imgUploadForm), function () {
+      submitBtn.disabled = false;
+      closePopup();
+      window.modal.showModalSucces();
+    }, function () {
+      submitBtn.disabled = false;
+      window.modal.showModalError();
+    });
+  };
+
+  imgUploadForm.addEventListener('submit', onFormSubmit);
 })();
