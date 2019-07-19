@@ -195,10 +195,12 @@
 
     window.backend.upload(new FormData(imgUploadForm), function () {
       submitBtn.disabled = false;
+      imgUploadForm.reset();
       closePopup();
       window.modal.showModalSucces();
     }, function () {
       submitBtn.disabled = false;
+      closePopup();
       window.modal.showModalError();
     });
   };
