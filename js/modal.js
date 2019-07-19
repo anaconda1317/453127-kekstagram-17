@@ -11,6 +11,8 @@
     while (
       !target.classList.contains('success__inner') &&
       !target.classList.contains('error__inner') &&
+      // когда дойдем до документа - это уже не сработает (target это HTML, parentNode -документ),
+      // вернет false и перейдем на if
       target.parentNode !== document
     ) {
       target = target.parentNode;
@@ -20,7 +22,7 @@
       closeModal(activeModal);
     }
   };
-
+  // создали именную функцию onDocumentKeydown, пч document.removeEventListener не удаляет анонимные функции
   var onDocumentKeydown = function (evt) {
     window.util.isEscEvent(evt, function () {
       closeModal(activeModal);
