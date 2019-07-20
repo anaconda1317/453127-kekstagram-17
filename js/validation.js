@@ -1,3 +1,4 @@
+
 'use strict';
 (function () {
   // Валидация в поле комментарии
@@ -59,14 +60,19 @@
     var tags = tagsField.value.trim().toLowerCase().split(' ');
     // Метод some() проверяет, удовлетворяет ли хоть какой-нибудь элемент массива условию, заданному в передаваемой функции
     if (tags.some(isBadTagFormat)) {
+      tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Хэш-тег должен начинаться с символа #');
     } else if (tags.some(isTooLongTag)) {
+      tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Максимальная длина одного хэш-тега ' + TagsConstraints.MAX_LENGTH + ' символов, включая решётку');
     } else if (isTagsRepeat(tags)) {
+      tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
     } else if (tags.length > TagsConstraints.QUANTITY) {
+      tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Нельзя указывать больше ' + TagsConstraints.QUANTITY + ' хэш-тегов');
     } else if (tags.some(isOneTag)) {
+      tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
 
 
@@ -75,6 +81,7 @@
       // специальное сообщение для  выбранного элемента.
       // Если элемент не имеет пользовательской ошибки в параметре укажите пустую строку.
       tagsField.setCustomValidity('');
+      tagsField.style = '';
 
     }
 
