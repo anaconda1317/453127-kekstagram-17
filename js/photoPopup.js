@@ -9,10 +9,9 @@
   var commentsList = photoPopup.querySelector('.social__comments');
   var loadMoreBtn = photoPopup.querySelector('.comments-loader');
   var socialCommentCount = photoPopup.querySelector('.social__comment-count');
-
-  // Спрячьте блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loade
-  loadMoreBtn.classList.add('hidden');
-  socialCommentCount.classList.add('hidden');
+  var COMMENTS_PER_PAGE = 5;
+  var renderedCommentsCount = 0;
+  var comments;
 
   var openPopup = function (photo) {
 
@@ -22,18 +21,35 @@
     // .url, .likes, .comments.length, .description - свойства объекта photo
     photoPopup.querySelector('.big-picture__img img').src = photo.url;
     photoPopup.querySelector('.likes-count').textContent = photo.likes;
-    photoPopup.querySelector('.comments-count').textContent = photo.comments.length;
     photoPopup.querySelector('.social__caption').textContent = photo.description;
     window.comments.commentDelete();
 
-    // photo.comments  свойство объекта photo - массив
-    var fragment = window.comments.renderComments(photo.comments);
-    commentsList.appendChild(fragment);
+    // photo.comments  свойство объекта photo - массив - 5/..из всех и их может  быть меньше 5
+    comments = photo.comments;
+    renderNextComments();
 
+    loadMoreBtn.addEventListener('click', renderNextComments);
 
     // закрытие btn
     document.addEventListener('keydown', onPopupUploadEscPress);
     closeBtn.addEventListener('click', closePopup);
+  };
+
+  var renderNextComments = function () {
+    // .slice создает новый массив без удаления из первых 5 элементов
+    var commentsForRender = comments.slice(renderedCommentsCount, renderedCommentsCount + COMMENTS_PER_PAGE);
+    renderedCommentsCount += commentsForRender.length;
+
+    var fragment = window.comments.renderComments(commentsForRender);
+    commentsList.appendChild(fragment);
+
+    if (renderedCommentsCount === comments.length) {
+      loadMoreBtn.classList.add('hidden');
+    } else {
+      loadMoreBtn.classList.remove('hidden');
+    }
+
+    socialCommentCount.textContent = renderedCommentsCount + ' из ' + comments.length + ' комментариев';
   };
 
   // закрытие при нажатии Esc
@@ -45,6 +61,9 @@
 
   var closePopup = function () {
     photoPopup.classList.add('hidden');
+
+    loadMoreBtn.removeEventListener('click', renderNextComments);
+    renderedCommentsCount = 0;
 
     document.removeEventListener('keydown', onPopupUploadEscPress);
     closeBtn.removeEventListener('click', closePopup);
