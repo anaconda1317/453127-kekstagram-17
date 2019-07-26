@@ -22,11 +22,44 @@
   var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
   var submitBtn = imgUploadForm.querySelector('.img-upload__submit');
 
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+  var preview = document.querySelector('.img-upload__preview img');
+  var effectsPreview = document.querySelectorAll('.effects__preview');
+
+  // Метод forEach() выполняет указанную функцию
+  // один раз для каждого элемента в массиве.
+  var pasteSrc = function (src) {
+    preview.src = src;
+    effectsPreview.forEach(function (el) {
+      el.style.backgroundImage = 'url("' + src + '")';
+    });
+  };
 
   // Показываем форму редактирования изображения событие 'change' на input type="file" id="upload-file"
   inputIdUploadFile.addEventListener('change', function () {
-    imgUploadOverlay.classList.remove('hidden');
-    document.addEventListener('keydown', onPopupUploadEscPress);
+    var file = inputIdUploadFile.files[0];
+    var fileName = file.name.toLowerCase();
+
+    // Метод some() проверяет, удовлетворяет ли хоть какой-нибудь
+    //  элемент массива условию, заданному в передаваемой функции
+    // matches это совпадения - it-перебирает расширения FILE_TYPES на каждой иттерации- ищет совпадения
+    // по расширениям файла
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        pasteSrc(reader.result);
+        imgUploadOverlay.classList.remove('hidden');
+        document.addEventListener('keydown', onPopupUploadEscPress);
+      });
+
+      reader.readAsDataURL(file);
+    }
   });
 
   // закрытие при нажатии Esc
@@ -49,11 +82,19 @@
     closePopup();
   });
 
+  var changeEffectLevel = function () {
+    effectLevelPin.style.left = 100 + '%';
+    effectLevelDepth.style.width = 100 + '%';
+    effectLevelValue.value = 100;
+  };
+
+
   // Мы ловим событие click  при нажатии на radio-button, которую находим по ее id,
   // на большой картинке с котом добавляеся  фильтр с интенсивностью 100%
 
   inputEffectNone.addEventListener('click', function () {
-    uploadImagePreview.style.filter = '';
+    // uploadImagePreview.style.filter = '';
+    changeFilterLevel(100);
     effectLevelScale.classList.add('hidden');
   });
   // строгое сравнение, если checked  на input id="effect-none" стоит, то шкала скрыта
@@ -66,27 +107,32 @@
 
   inputEffectChrome.addEventListener('click', function () {
     uploadImagePreview.style.filter = 'grayscale(1)';
+    changeEffectLevel();
     effectLevelScale.classList.remove('hidden');
   });
 
   inputEffectSepia.addEventListener('click', function () {
     uploadImagePreview.style.filter = 'sepia(1)';
+    changeEffectLevel();
     effectLevelScale.classList.remove('hidden');
   });
 
   inputEffectMarvin.addEventListener('click', function () {
     uploadImagePreview.style.filter = 'invert(100%)';
+    changeEffectLevel();
     effectLevelScale.classList.remove('hidden');
   });
 
   inputEffectPhobos.addEventListener('click', function () {
     uploadImagePreview.style.filter = 'blur(5px)';
+    changeEffectLevel();
     effectLevelScale.classList.remove('hidden');
   });
 
   inputEffectHeat.addEventListener('click', function () {
     // inputEffectHeat.checked = false;
     uploadImagePreview.style.filter = 'brightness(3)';
+    changeEffectLevel();
     effectLevelScale.classList.remove('hidden');
   });
 
@@ -206,4 +252,41 @@
   };
 
   imgUploadForm.addEventListener('submit', onFormSubmit);
+
+  // изменение размера изображения
+
+  var imgResize = document.querySelector('.img-upload__scale');
+  var minusResizeBtn = imgResize.querySelector('.scale__control--smaller');
+  var plusResizeBtn = imgResize.querySelector('.scale__control--bigger');
+  var resizeControlValue = imgResize.querySelector('.scale__control--value');
+
+  var Resize = {
+    MIN: 25,
+    MAX: 100,
+    STEP: 25
+  };
+
+  var changePhotoSize = function (value) {
+    // знвачение отображается в % строкой, когда кликаем, а изначально приходит в %
+    resizeControlValue.value = value + '%';
+    // от 0 до 1 для фильтра scale, поэтому делим на 100, чб получить в %
+    preview.style.transform = 'scale(' + value / 100 + ')';
+  };
+
+  var onScaleBtnClick = function (evt) {
+    var currentValue = parseInt(resizeControlValue.value, 10);
+
+    if (evt.target === minusResizeBtn) {
+      currentValue -= Resize.STEP;
+    } else {
+      currentValue += Resize.STEP;
+    }
+
+    if (currentValue >= Resize.MIN && currentValue <= Resize.MAX) {
+      changePhotoSize(currentValue);
+    }
+  };
+
+  plusResizeBtn.addEventListener('click', onScaleBtnClick);
+  minusResizeBtn.addEventListener('click', onScaleBtnClick);
 })();
