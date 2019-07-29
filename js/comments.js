@@ -10,7 +10,8 @@
   var createCommentElement = function (comment) {
     // Снова клонируем commentTemplate: новый узел commentElement, который будет клоном commentTemplate
     var commentElement = commentTemplate.cloneNode(true);
-    commentElement.querySelector('.social__comment > img').src = 'img/avatar-' + window.util.getRandomNumber(window.data.MIN_URL_AVATAR, window.data.MAX_URL_AVATAR) + '.svg';
+    commentElement.querySelector('.social__comment > img').src = comment.avatar;
+    commentElement.querySelector('.social__comment > img').alt = comment.name;
     // comment.message - это текстовые комменты, которые загрузились с сервера
     commentElement.querySelector('.social__text').textContent = comment.message;
     return commentElement;
@@ -40,4 +41,4 @@
   };
 })();
 
-
+// commentElement.querySelector('.social__comment > img').src = 'img/avatar-' + window.util.getRandomNumber(window.data.MIN_URL_AVATAR, window.data.MAX_URL_AVATAR) + '.svg';

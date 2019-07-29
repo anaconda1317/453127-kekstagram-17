@@ -14,7 +14,7 @@
   var comments;
 
   var openPopup = function (photo) {
-
+    pageBody.classList.add('modal-open');
     photoPopup.classList.remove('hidden');
 
     // элемент .big-picture заполняем данными
@@ -22,6 +22,7 @@
     photoPopup.querySelector('.big-picture__img img').src = photo.url;
     photoPopup.querySelector('.likes-count').textContent = photo.likes;
     photoPopup.querySelector('.social__caption').textContent = photo.description;
+
     window.comments.commentDelete();
 
     // photo.comments  свойство объекта photo - массив - 5/..из всех и их может  быть меньше 5
@@ -60,6 +61,7 @@
   };
 
   var closePopup = function () {
+    pageBody.classList.remove('modal-open');
     photoPopup.classList.add('hidden');
 
     loadMoreBtn.removeEventListener('click', renderNextComments);

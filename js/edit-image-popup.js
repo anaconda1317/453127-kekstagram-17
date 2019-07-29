@@ -54,6 +54,7 @@
 
       reader.addEventListener('load', function () {
         pasteSrc(reader.result);
+        document.body.classList.add('modal-open');
         imgUploadOverlay.classList.remove('hidden');
         document.addEventListener('keydown', onPopupUploadEscPress);
       });
@@ -72,6 +73,8 @@
   };
 
   var closePopup = function () {
+    changePhotoSize(100);
+    document.body.classList.remove('modal-open');
     imgUploadOverlay.classList.add('hidden');
     // убираем обработчик события со всего документа
     document.removeEventListener('keydown', onPopupUploadEscPress);

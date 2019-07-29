@@ -153,5 +153,5 @@
     };
     picturesBlock.addEventListener('click', onPhotoClick);
     // picturesBlock это parentNode
-  });
+  }, alert);
 })();
