@@ -1,7 +1,6 @@
 'use strict';
 (function () {
   var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
 
   window.util = {
     // функция для получения случайного числа в заданном диапазоне
@@ -36,11 +35,7 @@
     },
 
     // нажатие ENTER
-    isEnterEvent: function (evt, action) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        action();
-      }
-    },
+
     // закрытие при нажатии Esc
     isEscEvent: function (evt, action) {
       if (evt.keyCode === ESC_KEYCODE) {
@@ -49,4 +44,3 @@
     }
   };
 })();
-

@@ -27,8 +27,9 @@
 
 
   // хэш-тег начинается с символа # (решётка)
+  // вернет tru, если решетка не в начале тега будет
   var isBadTagFormat = function (tag) {
-    return tag && tag.indexOf(TagsConstraints.HASH_SYMBOL) !== 0;
+    return tag && tag.lastIndexOf(TagsConstraints.HASH_SYMBOL) !== 0;
   };
 
   // максимальная длина одного хэш-тега 20 символов, включая решётку
@@ -37,13 +38,13 @@
   };
   // один и тот же хэш-тег не может быть использован дважды
   var isTagsRepeat = function (arr) {
-    var existingElements = {};
 
     for (var i = 0; i < arr.length; i++) {
-      if (existingElements[arr[i]]) {
-        return true;
+      for (var j = 0; j < arr.length; j++) {
+        if (i !== j && arr[i] === arr[j]) {
+          return true;
+        }
       }
-      existingElements[arr[i]] = true;
     }
     return false;
   };
@@ -61,7 +62,7 @@
     // Метод some() проверяет, удовлетворяет ли хоть какой-нибудь элемент массива условию, заданному в передаваемой функции
     if (tags.some(isBadTagFormat)) {
       tagsField.style = 'outline: 2px solid red;';
-      tagsField.setCustomValidity('Хэш-тег должен начинаться с символа #');
+      tagsField.setCustomValidity('Хэш-теги должны начинаться с символа # и разделяться пробелами');
     } else if (tags.some(isTooLongTag)) {
       tagsField.style = 'outline: 2px solid red;';
       tagsField.setCustomValidity('Максимальная длина одного хэш-тега ' + TagsConstraints.MAX_LENGTH + ' символов, включая решётку');

@@ -2,20 +2,21 @@
 
 
 (function () {
-
+  var COMMENTS_PER_PAGE = 5;
   var pageBody = document.querySelector('body');
   var photoPopup = pageBody.querySelector('.big-picture');
   var closeBtn = photoPopup.querySelector('.big-picture__cancel');
   var commentsList = photoPopup.querySelector('.social__comments');
   var loadMoreBtn = photoPopup.querySelector('.comments-loader');
   var socialCommentCount = photoPopup.querySelector('.social__comment-count');
-  var COMMENTS_PER_PAGE = 5;
   var renderedCommentsCount = 0;
   var comments;
 
   var openPopup = function (photo) {
     pageBody.classList.add('modal-open');
     photoPopup.classList.remove('hidden');
+    // кнопка в фокусе
+    closeBtn.focus();
 
     // элемент .big-picture заполняем данными
     // .url, .likes, .comments.length, .description - свойства объекта photo

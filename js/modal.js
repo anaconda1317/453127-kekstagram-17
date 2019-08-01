@@ -35,7 +35,7 @@
     document.removeEventListener('click', onDocumentClick);
   };
 
-  var showModalSucces = function () {
+  var showModalSuccess = function () {
     // клонируем шаблон, пч при закрытии модалки шаблон бы удалялся совсем
     // вставили не сам successModalTemplate.content, а его клон.
     // Это обычная практика, чтобы можно было использовать один шаблон много раз.
@@ -75,7 +75,7 @@
 
 
   window.modal = {
-    showModalSucces: showModalSucces,
+    showModalSuccess: showModalSuccess,
     showModalError: showModalError
   };
 })();

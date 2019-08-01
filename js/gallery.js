@@ -1,13 +1,11 @@
 'use strict';
 (function () {
-
+  var NEW_PHOTOS_COUNT = 10;
   var sortFilters = document.querySelector('.img-filters');
   var activeSortBtn = sortFilters.querySelector('.img-filters__button--active');
   var sortBtnPopular = sortFilters.querySelector('#filter-popular');
   var sortBtnNew = sortFilters.querySelector('#filter-new');
   var sortBtnDiscussed = sortFilters.querySelector('#filter-discussed');
-
-  var NEW_PHOTOS_COUNT = 10;
 
   // создание элемента
   var pictureTemplate = document.querySelector('#picture').
@@ -153,5 +151,6 @@
     };
     picturesBlock.addEventListener('click', onPhotoClick);
     // picturesBlock это parentNode
+    // сообщение об ошибке выводит, если интернет вылетел или долго грузится
   }, alert);
 })();

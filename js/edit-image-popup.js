@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var imgUploadForm = document.querySelector('.img-upload__form');
   var uploadElement = document.querySelector('.img-upload');
   // Изначальное состояние поля для загрузки изображения
@@ -21,8 +22,6 @@
   var currentEffectName = effectsListElement.querySelector('.effects__radio:checked');
   var effectLevelScale = imgUploadOverlay.querySelector('.img-upload__effect-level');
   var submitBtn = imgUploadForm.querySelector('.img-upload__submit');
-
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var preview = document.querySelector('.img-upload__preview img');
   var effectsPreview = document.querySelectorAll('.effects__preview');
@@ -246,7 +245,7 @@
       submitBtn.disabled = false;
       imgUploadForm.reset();
       closePopup();
-      window.modal.showModalSucces();
+      window.modal.showModalSuccess();
     }, function () {
       submitBtn.disabled = false;
       closePopup();
