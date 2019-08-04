@@ -39,7 +39,7 @@
 
 
   // отрисовка фото в документе
-  var renderPhotos = window.debounce(function (photos) {
+  var renderPhotos = function (photos) {
     var fragment = document.createDocumentFragment();
     // Мы сложили в массив фотки, а цикл организован по массиву -
     //  и мы опираеcя на порядок элементов в массиве (он начся с 0)
@@ -48,8 +48,7 @@
       fragment.appendChild(renderPhoto(photo));
     });
     picturesBlock.appendChild(fragment);
-
-  });
+  };
 
   // сортировка ПОПУЛЯРНЫЕ
   // Мы вызываем функцию window.debounce и ей передаем в параметры  анонимную функцию,
@@ -63,7 +62,7 @@
   // сортировка НОВЫЕ -копируем исходный массив
   var showNewPhotos = function (photos) {
     removeFormerPhotos();
-    var randomPhotos = window.util.getUniqueElement(photos, NEW_PHOTOS_COUNT);
+    var randomPhotos = window.util.getUniqueElements(photos, NEW_PHOTOS_COUNT);
 
     renderPhotos(randomPhotos);
   };
@@ -113,20 +112,30 @@
     // 2. после этого показать блок с кнопками-фильтрами
     sortFilters.classList.remove('img-filters--inactive');
 
+    var filterClick = window.debounce(function (evt) {
+      if (evt.target === sortBtnNew) {
+        showNewPhotos(photos);
+      } else if (evt.target === sortBtnPopular) {
+        showPopularPhotos(photos);
+      } else if (evt.target === sortBtnDiscussed) {
+        showDiscussedPhotos(photos);
+      }
+    });
+
     // 3. событие-клик по активной кнопке - загрузка отфильтрованых фото (какой фильтр - написано на button)
     sortBtnPopular.addEventListener('click', function (evt) {
       selectFilter(evt);
-      showPopularPhotos(photos);
+      filterClick(evt);
     });
 
     sortBtnNew.addEventListener('click', function (evt) {
       selectFilter(evt);
-      showNewPhotos(photos);
+      filterClick(evt);
     });
 
     sortBtnDiscussed.addEventListener('click', function (evt) {
       selectFilter(evt);
-      showDiscussedPhotos(photos);
+      filterClick(evt);
     });
 
     // открытие попапа с полноразмерным фото

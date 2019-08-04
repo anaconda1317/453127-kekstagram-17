@@ -73,9 +73,9 @@
     document.addEventListener('keydown', onDocumentKeydown);
   };
 
-
   window.modal = {
     showModalSuccess: showModalSuccess,
     showModalError: showModalError
   };
 })();
+

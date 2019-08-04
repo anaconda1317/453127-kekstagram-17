@@ -1,10 +1,10 @@
 
 'use strict';
 (function () {
+  var ESC_KEYCODE = 27;
   // Валидация в поле комментарии
   var imgUploadForm = document.querySelector('.img-upload__form');
   var focusTextarea = imgUploadForm.querySelector('.text__description');
-  var ESC_KEYCODE = 27;
   var tagsField = imgUploadForm.querySelector('.text__hashtags');
   var TagsConstraints = {
     QUANTITY: 5,

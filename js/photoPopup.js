@@ -28,16 +28,16 @@
 
     // photo.comments  свойство объекта photo - массив - 5/..из всех и их может  быть меньше 5
     comments = photo.comments;
-    renderNextComments();
+    onLoadMoreBtnClick();
 
-    loadMoreBtn.addEventListener('click', renderNextComments);
+    loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 
     // закрытие btn
     document.addEventListener('keydown', onPopupUploadEscPress);
     closeBtn.addEventListener('click', closePopup);
   };
 
-  var renderNextComments = function () {
+  var onLoadMoreBtnClick = function () {
     // .slice создает новый массив без удаления из первых 5 элементов
     var commentsForRender = comments.slice(renderedCommentsCount, renderedCommentsCount + COMMENTS_PER_PAGE);
     renderedCommentsCount += commentsForRender.length;
@@ -65,7 +65,7 @@
     pageBody.classList.remove('modal-open');
     photoPopup.classList.add('hidden');
 
-    loadMoreBtn.removeEventListener('click', renderNextComments);
+    loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
     renderedCommentsCount = 0;
 
     document.removeEventListener('keydown', onPopupUploadEscPress);

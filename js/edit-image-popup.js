@@ -246,10 +246,10 @@
       imgUploadForm.reset();
       closePopup();
       window.modal.showModalSuccess();
-    }, function () {
+    }, function (error) {
       submitBtn.disabled = false;
       closePopup();
-      window.modal.showModalError();
+      window.modal.showModalError(error);
     });
   };
 
