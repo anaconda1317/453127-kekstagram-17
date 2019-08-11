@@ -79,6 +79,13 @@
     document.removeEventListener('keydown', onPopupUploadEscPress);
   };
 
+  // закрывает форму редактирования изображения c проверкой, что элемент проверяем на существование вместо 89-92 строк
+  if (buttonImgUploadCancel) {
+    buttonImgUploadCancel.addEventListener('click', function () {
+      closePopup();
+    });
+  }
+
   // закрывает форму редактирования изображения кнопкой
   buttonImgUploadCancel.addEventListener('click', function () {
     closePopup();
